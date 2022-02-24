@@ -1,0 +1,31 @@
+body {
+  font-family: "Lato", sans-serif;
+}
+
+h1 {
+  text-align: center;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 15% 85%;
+}
+
+.container {
+  border: 2px solid #565656;
+  margin: 10px;
+}
+
+.menu {
+  margin: 10px;
+  border-bottom: 1px solid #ababab;
+}
+
+.menu p {
+  font-weight: bold;
+}
+
+canvas {
+  border: 5px solid black;
+  margin: 15px;
+}

@@ -13,6 +13,7 @@ varying vec3 fragColor;
 void main() {
     fragColor = vertexColor;
     gl_Position = vec4(vertexPosition, 0.0, 1.0);
+    gl_PointSize = 10.0;
 }`;
 
 var fragmentShaderCode = `precision mediump float;

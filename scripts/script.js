@@ -309,3 +309,12 @@ var hexToRgb = (hex) =>
     .substring(1)
     .match(/.{2}/g)
     .map((x) => parseInt(x, 16));
+
+/* help popup */
+function openHelp() {
+  document.getElementById("help-popup").style.display = "block";
+}
+
+function closeHelp() {
+  document.getElementById("help-popup").style.display = "none";
+}

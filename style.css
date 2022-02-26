@@ -17,15 +17,38 @@ h1 {
 }
 
 .menu {
-  margin: 10px;
-  border-bottom: 1px solid #ababab;
-}
-
-.menu p {
-  font-weight: bold;
+  padding: 0px 10px 10px;
+  border-bottom: 2px solid #ababab;
 }
 
 canvas {
   border: 5px solid black;
   margin: 15px;
+}
+
+.hrgrid3 {
+  display: grid;
+  grid-template-columns: 10% auto auto;
+  border-bottom: 2px solid #121212;
+}
+
+.hrgrid3 .menu {
+  border-bottom: none;
+}
+
+#extramenuPolygon {
+  display: none;
+}
+
+.grid3border {
+  display: grid;
+  grid-template-columns: 20% 20% 60%;
+}
+
+.grid3border p {
+  margin: 0;
+}
+
+#selectStats {
+  display: none;
 }

@@ -16,48 +16,91 @@
     <div class="grid-container">
       <div class="container">
         <div class="menu">
-          <p>How to use</p>
+          <h4>How to use</h4>
           <button type="button">Help</button>
         </div>
         <div class="menu">
-          <p>File</p>
+          <h4>File</h4>
           <div class="button2container">
             <button type="button">Load</button>
             <button type="button">Save</button>
           </div>
         </div>
-      </div>
-      <div class="container">
         <div class="menu">
-          <p>Models</p>
-          <div class="button4container">
+          <h4>Select menu</h4>
+          <div>
+            <p>Change polygon color</p>
+            <input type="color" name="col-picker" id="col-picker" />
             <input
               type="button"
               id="btn_line"
-              value="Line"
-              onclick="setLine()"
+              value="Change color"
+              onclick="changeColor()"
             />
-            <input
-              type="button"
-              id="btn_square"
-              value="Square"
-              onclick="setSquare()"
-            />
-            <input
-              type="button"
-              id="btn_rectangle"
-              value="Square"
-              onclick="setRectangle()"
-            />
-            <input
-              type="button"
-              id="btn_polygon"
-              value="Polygon"
-              onclick="drawPolygon()"
-            />
-            <button id="finishPolygon">End polygon</button>
           </div>
         </div>
+      </div>
+      <div class="container">
+        <div class="hrgrid3">
+          <div class="menu">
+            <h4>Select</h4>
+            <input
+              type="button"
+              id="btn_select"
+              value="Select"
+              onclick="setSelect()"
+            />
+          </div>
+          <div class="menu">
+            <h4>Models</h4>
+            <div class="button4container">
+              <input
+                type="button"
+                id="btn_line"
+                value="Line"
+                onclick="setLine()"
+              />
+              <input
+                type="button"
+                id="btn_square"
+                value="Square"
+                onclick="setSquare()"
+              />
+              <input
+                type="button"
+                id="btn_rectangle"
+                value="Rectangle"
+                onclick="setRectangle()"
+              />
+              <input
+                type="button"
+                id="btn_polygon"
+                value="Polygon"
+                onclick="setPolygon()"
+              />
+            </div>
+          </div>
+          <div>
+            <div id="extramenuPolygon" class="menu">
+              <h4>Drawing polygon</h4>
+              <input
+                type="button"
+                id="finishPolygon"
+                value="End polygon"
+                onclick="finishPolygon()"
+              />
+            </div>
+            <div id="selectStats" class="menu">
+              <h4>Select Status</h4>
+              <div class="grid3border">
+                <p>x = <span id="select-x"></span></p>
+                <p>y = <span id="select-y"></span></p>
+                <p>Selected Model Id = <span id="select-id"></span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <canvas id="glcanvas" width="1000" height="500"></canvas>
       </div>
     </div>

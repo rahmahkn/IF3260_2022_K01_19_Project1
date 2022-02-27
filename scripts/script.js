@@ -16,8 +16,11 @@ isSquare = false;
 isRectangle = false;
 isPolygon = false;
 
+isDrag = false;
 isSelect = false;
+isPointSelected = false;
 var idxSelected = -1;
+var vertexSelected = -1;
 
 /* Prepare the canvas and get WebGL context */
 canvas = document.getElementById("glcanvas");
@@ -47,31 +50,71 @@ canvas.addEventListener("mousedown", function (event) {
       document.getElementById("select-id").textContent = idxSelected;
       return;
     }
+
+    // check if this click is suppose to select a point
+    if (isVertex(x, y) != null) {
+      isDrag = true;
+      canvas.addEventListener("mouseup", (event) => changePoint(canvas, event, isVertex(x, y)))
+    }
   }
 
-  // push coordinate to array
-  vertices.push(x);
-  vertices.push(y);
+  // check if we want to start drawing
+  if (isLine || isSquare || isRectangle || isPolygon) {
+    // push coordinate to array
+    vertices.push(x);
+    vertices.push(y);
 
-  // push color to array - asuumption: color is black
-  vertices.push(0);
-  vertices.push(0);
-  vertices.push(0);
+    // push color to array - asuumption: color is black
+    vertices.push(0);
+    vertices.push(0);
+    vertices.push(0);
 
-  // do "special treatment" depend on the model that the user wants to make
-  if (isLine) {
-    drawLine();
-  } else if (isSquare) {
-    drawSquare();
-  } else if (isRectangle) {
-    drawRectangle();
-  } else if (isPolygon) {
-    drawPolygon();
+    // do "special treatment" depend on the model that the user wants to make
+    if (isLine) {
+      drawLine();
+    } else if (isSquare) {
+      drawSquare();
+    } else if (isRectangle) {
+      drawRectangle();
+    } else if (isPolygon) {
+      drawPolygon();
+    }
+
+    // add index, ready to get the next coordinate
+    index++;
   }
-
-  // add index, ready to get the next coordinate
-  index++;
 });
+
+// checking if point (x,y) is a vertex
+function isVertex(x, y) {
+  var new_x = (Number(x)).toFixed(1)
+  var new_y = (Number(y)).toFixed(1)
+
+  for (i = 0; i < index; i++) {
+    var vert_x = (Number(vertices[i*5])).toFixed(1)
+    var vert_y = (Number(vertices[i*5+1])).toFixed(1)
+
+    if (new_x == vert_x && new_y == vert_y) {
+      return i;
+    }
+  }
+  return null;
+}
+
+// change (x,y) that has been clicked to (new_x, new_y)
+function changePoint(canvas, event, i) {
+  if (isDrag) {
+    var new_x = getXClickedPosition(canvas, event)
+    var new_y = getYClickedPosition(canvas, event)
+  
+    vertices[i*5] = new_x
+    vertices[i*5+1] = new_y
+  
+    main()
+
+    isDrag = false;
+  }
+}
 
 function insideOf(x, y) {
   var insideOf = -1;
@@ -254,6 +297,7 @@ var render = function () {
     // if Model[i] is a polygon
     if (type[i] == 4) {
       gl.drawArrays(gl.TRIANGLE_FAN, start[i], numIndices[i]);
+      gl.drawArrays(gl.POINTS, start[i], numIndices[i]);
     }
     // debug
     // console.log("masuk render ke-" + i);

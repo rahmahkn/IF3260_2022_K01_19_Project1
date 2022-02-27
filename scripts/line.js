@@ -1,48 +1,36 @@
-var verticesLines = [];
-var indexLines = 0;
+var startLine = 0
+var numPoint = 0;
 
-var numLines = 0;
-var numIndicesLines = [];
-numIndicesLines[0] = 0;
-var startLines = [0];
+function setLine() {
+  // set so that user can only choose coordinate to make a line model
+  isLine = true;
 
-function drawLine() {
-  var n = 0;
+  isPolygon = false;
+  isSquare = false;
+  isRectangle = false;
+  isSelect = false;
 
-  canvas.addEventListener("mousedown", function (event) {
-    n++;
-    x = getXClickedPosition(canvas, event);
-    y = getYClickedPosition(canvas, event);
-
-    // push coordinate to array
-    verticesLines.push(x);
-    verticesLines.push(y);
-
-    //push color to array - asuumption: polygon color is black
-    verticesLines.push(0);
-    verticesLines.push(0);
-    verticesLines.push(0);
-
-    numIndicesLines[numLines]++;
-    indexLines++;
-
-    if (n == 2) {
-      numLines++;
-      numIndicesLines[numLines] = 0;
-      startLines[numLines] = indexLines;
-
-      main(verticesLines);
-
-      renderLine();
-
-      n = 0;
-    }
-  });
+  // set type = 1 -> line
+  type[numModel] = 1;
 }
 
-function renderLine() {
-  gl.clear(gl.COLOR_BUFFER_BIT);
+function drawLine() {
+  numPoint++;
 
-  gl.drawArrays(gl.LINES, 0, indexLines);
-  gl.drawArrays(gl.POINTS, 0, indexLines);
+  console.log(x, y)
+
+  // checking if 2 points are clicked, if yes, add a new line
+  if (numPoint == 2) {
+    numModel++;
+    numIndices[numModel] = 2;
+    start[numModel] = startLine;
+
+    type[numModel] = 1;
+
+    numPoint = 0;
+
+    main()
+  } else {
+    startLine = index + 2;
+  }
 }

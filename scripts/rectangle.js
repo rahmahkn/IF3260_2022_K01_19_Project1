@@ -66,6 +66,6 @@ function drawRectangle() {
 function renderRectangle() {
     gl.clear(gl.COLOR_BUFFER_BIT);
 
-    for(var i = 0; i<indexRectangle; i+=4)
+    for(var i = 0; i<indexRectangle; i += 4)
         gl.drawArrays(gl.TRIANGLE_FAN, i, 4)
 }

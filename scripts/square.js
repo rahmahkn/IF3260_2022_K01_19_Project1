@@ -3,6 +3,8 @@ var indexSquare = 0
 
 var cornersSquare = []
 
+var pointsSquare = []
+
 function drawSquare() {
     var begin = true;
 
@@ -78,6 +80,9 @@ function drawSquare() {
 
             renderSquare();
 
+            pointsSquare.push(cornersSquare)
+
+            // console.log(pointsSquare)
         }
     });
 }
@@ -85,6 +90,29 @@ function drawSquare() {
 function renderSquare() {
     gl.clear(gl.COLOR_BUFFER_BIT);
 
-    for(var i = 0; i<indexSquare; i+=4)
+    for(var i = 0; i<indexSquare; i += 4)
         gl.drawArrays(gl.TRIANGLE_FAN, i, 4)
+}
+
+function isInsideSquare() {
+    canvas.addEventListener("mousedown", function (event) {
+        x = getXClickedPosition(canvas, event);
+        y = getYClickedPosition(canvas, event);
+
+        let found = false;
+
+        let i = 0
+        console.log(pointsSquare)
+        while (!found && i < pointsSquare.length) {
+            if ((pointsSquare[i][0] <= x && x <= pointsSquare[i][2]) && (pointsSquare[i][1] <= y && y <= pointsSquare[i][3])) {
+                found = true;
+                console.log("found");
+                return i;
+            }
+            console.log(i)
+            i++;
+        }
+
+        return -1;
+    }); 
 }

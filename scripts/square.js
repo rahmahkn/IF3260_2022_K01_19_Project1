@@ -33,7 +33,7 @@ function drawSquare() {
             }
             else {
                 if (firstY > y) {
-                    x = firstX + (firstY-y)/2
+                    x = firstX - (firstY-y)/2
                 } else {
                     x = firstX + (firstY-y)/2
                 }

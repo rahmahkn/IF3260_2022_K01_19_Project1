@@ -17,15 +17,84 @@ h1 {
 }
 
 .menu {
-  margin: 10px;
-  border-bottom: 1px solid #ababab;
-}
-
-.menu p {
-  font-weight: bold;
+  padding: 0px 10px 10px;
+  border-bottom: 2px solid #ababab;
 }
 
 canvas {
   border: 5px solid black;
   margin: 15px;
+}
+
+.hrgrid3 {
+  display: grid;
+  grid-template-columns: 10% auto auto;
+  border-bottom: 2px solid #121212;
+}
+
+.hrgrid3 .menu {
+  border-bottom: none;
+}
+
+#extramenuPolygon {
+  display: none;
+}
+
+.grid3border {
+  display: grid;
+  grid-template-columns: 20% 20% 60%;
+}
+
+.grid3border p {
+  margin: 0;
+}
+
+#selectStats {
+  display: none;
+}
+
+/* popup */
+#help-popup {
+  width: 80%;
+  min-height: 80%;
+  top: 10%;
+  left: 10%;
+  position: absolute;
+  display: none;
+  background-color: #fefefe;
+  border: 5px solid #efefef;
+  border-radius: 10px;
+}
+
+.help-container {
+  position: relative;
+  margin: 0 auto;
+  top: 25%;
+}
+
+.column2grid {
+  display: grid;
+  grid-template-columns: auto auto;
+  padding: 10px;
+}
+
+#btn_exithelp {
+  margin-top: 0;
+  float: right;
+}
+
+.helpmenu {
+  border: 1px solid #cdcdcd;
+  margin: 5px;
+  padding: 10px;
+}
+
+.supermenu {
+  background-color: #eeeeee;
+  margin: 15px;
+  padding: 10px;
+}
+
+.supermenu h3 {
+  text-align: center;
 }

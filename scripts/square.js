@@ -16,13 +16,8 @@ function drawSquare() {
             cornersSquare = [];
             cornersSquare.push(x);
             cornersSquare.push(y);
-            // indexCornersSquare++;
 
             begin = false;
-
-            console.log("first click")
-            console.log(cornersSquare);
-            // console.log(cornersSquare.length-1);
         }
         // Second click
         else {
@@ -43,11 +38,6 @@ function drawSquare() {
                     x = firstX + (firstY-y)/2
                 }
             }
-            
-            console.log("x distance")
-            console.log(Math.abs(x-firstX))
-            console.log("y distance")
-            console.log(Math.abs(firstY-y))
 
             cornersSquare.push(x)
             cornersSquare.push(y)
@@ -83,14 +73,6 @@ function drawSquare() {
 
             indexSquare += 4;
             begin = true;
-
-            // console.log("second click");
-            // console.log(cornersSquare);
-            // console.log(cornersSquare.length-1);
-
-            // console.log("vertices")
-            // console.log(verticesSquare);
-            // console.log(verticesSquare.length)
 
             main(verticesSquare);
 

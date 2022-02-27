@@ -1,8 +1,7 @@
 var verticesRectangle = []
 var indexRectangle = 0;
 
-var cornersRectangle = [];
-// var indexCornersRectangle = 0; 
+var cornersRectangle = []; 
 
 function drawRectangle() {
     var begin = true;
@@ -17,13 +16,8 @@ function drawRectangle() {
             cornersRectangle = [];
             cornersRectangle.push(x);
             cornersRectangle.push(y);
-            // indexCornersRectangle++;
 
             begin = false;
-
-            console.log("first click")
-            console.log(cornersRectangle);
-            // console.log(cornersRectangle.length-1);
         }
         // Second click
         else {
@@ -61,14 +55,6 @@ function drawRectangle() {
 
             indexRectangle += 4;
             begin = true;
-
-            console.log("second click");
-            console.log(cornersRectangle);
-            // console.log(cornersRectangle.length-1);
-
-            console.log("vertices")
-            console.log(verticesRectangle);
-            console.log(verticesRectangle.length)
 
             main(verticesRectangle);
 

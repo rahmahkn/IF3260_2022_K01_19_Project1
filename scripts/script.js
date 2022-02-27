@@ -1,8 +1,113 @@
+/* global variables */
+var vertices = [];
+var index = 0;
+var start = [0];
+var type = [];
+/* type menyimpan tipe model yang dibuat */
+/* 1 = line
+    /* 2 = square
+    /* 3 = rectangle
+    /* 4 = polygon */
+var numIndices = [0];
+var numModel = 0;
+
+isLine = false;
+isSquare = false;
+isRectangle = false;
+isPolygon = false;
+
+isSelect = false;
+var idxSelected = -1;
+
 /* Prepare the canvas and get WebGL context */
 canvas = document.getElementById("glcanvas");
 const gl = canvas.getContext("webgl");
 if (!gl) {
   alert("WebGL isn't available");
+}
+
+/* add event listener to canvas */
+canvas.addEventListener("mousedown", function (event) {
+  // cek apakah sudah memilih menu sebelumnya
+  if (!(isLine || isSquare || isRectangle || isPolygon || isSelect)) {
+    return;
+  }
+
+  // get position
+  x = getXClickedPosition(canvas, event);
+  y = getYClickedPosition(canvas, event);
+
+  // check if user want to select something
+  if (isSelect) {
+    showSelectProperties(x, y);
+    // check if this click is suppose to select a polygon
+    idxSelected = insideOf(x, y);
+    if (idxSelected >= 0) {
+      // show all select menu & select stats
+      document.getElementById("select-id").textContent = idxSelected;
+      return;
+    }
+  }
+
+  // push coordinate to array
+  vertices.push(x);
+  vertices.push(y);
+
+  // push color to array - asuumption: color is black
+  vertices.push(0);
+  vertices.push(0);
+  vertices.push(0);
+
+  // do "special treatment" depend on the model that the user wants to make
+  if (isLine) {
+    drawLine();
+  } else if (isSquare) {
+    drawSquare();
+  } else if (isRectangle) {
+    drawRectangle();
+  } else if (isPolygon) {
+    drawPolygon();
+  }
+
+  // add index, ready to get the next coordinate
+  index++;
+});
+
+function insideOf(x, y) {
+  var insideOf = -1;
+  for (i = 0; i < numModel; i++) {
+    if (type[i] == 4) {
+      // gather all vertices
+      var vert = [];
+      var a = start[i];
+      for (j = a; j < a + numIndices[i]; j++) {
+        var point = [];
+        point.push(vertices[j * 5]);
+        point.push(vertices[j * 5 + 1]);
+        vert.push(point);
+      }
+      if (isInside(x, y, vert)) {
+        return i;
+      }
+    }
+  }
+  return insideOf;
+}
+
+function isInside(x, y, vert) {
+  var inside = false;
+  for (var i = 0, j = vert.length - 1; i < vert.length; j = i++) {
+    var xi = vert[i][0],
+      yi = vert[i][1];
+    var xj = vert[j][0],
+      yj = vert[j][1];
+
+    var intersect =
+      yi > y != yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
+    if (intersect) inside = !inside;
+  }
+
+  return inside;
 }
 
 /* create and compile shader program */
@@ -105,12 +210,15 @@ var associateBufferShader = function (shaderProgram, vertices) {
 };
 
 /* create shader and draw object */
-var main = function (vertices) {
+var main = function () {
   // set shader
   program = shader();
 
   // associate buffer and shader
   associateBufferShader(program, vertices);
+
+  // render
+  render();
 };
 
 var getXClickedPosition = function (canvas, event) {
@@ -126,3 +234,87 @@ var getYClickedPosition = function (canvas, event) {
   return ((y - canvas.height / 2) / (canvas.height / 2)) * -1;
   //return (2 * (canvas.height - event.clientY)) / canvas.height - 1;
 };
+
+var render = function () {
+  gl.clear(gl.COLOR_BUFFER_BIT);
+
+  for (var i = 0; i < numModel; i++) {
+    // if Model[i] is a line
+    if (type[i] == 1) {
+      gl.drawArrays(gl.LINES, start[i], 2);
+      gl.drawArrays(gl.POINTS, start[i], 2);
+    }
+    // if Model[i] is a square
+    if (type[i] == 2) {
+    }
+    // if Model[i] is a rectangle
+    if (type[i] == 3) {
+    }
+    // if Model[i] is a polygon
+    if (type[i] == 4) {
+      gl.drawArrays(gl.TRIANGLE_FAN, start[i], numIndices[i]);
+    }
+    // debug
+    // console.log("masuk render ke-" + i);
+    // console.log(type[i]);
+  }
+};
+
+var setSelect = function () {
+  isSelect = true;
+  isLine = false;
+  isSquare = false;
+  isRectangle = false;
+  isPolygon = false;
+
+  // hide extra menus
+  document.getElementById("extramenuPolygon").style.display = "none";
+};
+
+var showSelectProperties = function (x, y) {
+  document.getElementById("select-x").textContent = x.toFixed(5);
+  document.getElementById("select-y").textContent = y.toFixed(5);
+  document.getElementById("selectStats").style.display = "grid";
+};
+
+var changeColor = function () {
+  if (!isSelect) {
+    alert("Select polygon you want the color to change first");
+    return;
+  }
+  var hex = document.getElementById("col-picker").value;
+  var rgb = [0.0, 0.0, 0.0];
+
+  rgb = hexToRgb(hex);
+
+  // change vertices element
+  var startIdx = start[idxSelected] * 5;
+  for (i = 0; i < numIndices[idxSelected]; i++) {
+    vertices[startIdx + i * 5 + 2] = rgb[0] / 255;
+    vertices[startIdx + i * 5 + 3] = rgb[1] / 255;
+    vertices[startIdx + i * 5 + 4] = rgb[2] / 255;
+  }
+
+  main();
+
+  document.getElementById("selectStats").style.display = "none";
+};
+
+var hexToRgb = (hex) =>
+  hex
+    .replace(
+      /^#?([a-f\d])([a-f\d])([a-f\d])$/i,
+      (m, r, g, b) => "#" + r + r + g + g + b + b
+    )
+    .substring(1)
+    .match(/.{2}/g)
+    .map((x) => parseInt(x, 16));
+
+/* help popup */
+function openHelp() {
+  document.getElementById("help-popup").style.display = "block";
+}
+
+function closeHelp() {
+  document.getElementById("help-popup").style.display = "none";
+}

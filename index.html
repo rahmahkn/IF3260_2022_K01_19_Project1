@@ -18,49 +18,187 @@
     <div class="grid-container">
       <div class="container">
         <div class="menu">
-          <p>How to use</p>
-          <button type="button">Help</button>
+          <h4>How to use</h4>
+          <input
+            type="button"
+            id="btn_help"
+            value="Help"
+            onclick="openHelp()"
+          />
         </div>
         <div class="menu">
-          <p>File</p>
+          <h4>File</h4>
           <div class="button2container">
             <button type="button">Load</button>
             <button type="button">Save</button>
           </div>
         </div>
-      </div>
-      <div class="container">
         <div class="menu">
-          <p>Models</p>
-          <div class="button4container">
+          <h4>Select menu</h4>
+          <div>
+            <p>Change polygon color</p>
+            <input type="color" name="col-picker" id="col-picker" />
             <input
               type="button"
               id="btn_line"
-              value="Line"
-              onclick="setLine()"
+              value="Change color"
+              onclick="changeColor()"
             />
-            <input
-              type="button"
-              id="btn_square"
-              value="Square"
-              onclick="drawSquare()"
-            />
-            <input
-              type="button"
-              id="btn_rectangle"
-              value="Rectangle"
-              onclick="drawRectangle()"
-            />
-            <input
-              type="button"
-              id="btn_polygon"
-              value="Polygon"
-              onclick="drawPolygon()"
-            />
-            <button id="finishPolygon">End polygon</button>
           </div>
         </div>
+      </div>
+      <div class="container">
+        <div class="hrgrid3">
+          <div class="menu">
+            <h4>Select</h4>
+            <input
+              type="button"
+              id="btn_select"
+              value="Select"
+              onclick="setSelect()"
+            />
+          </div>
+          <div class="menu">
+            <h4>Models</h4>
+            <div class="button4container">
+              <input
+                type="button"
+                id="btn_line"
+                value="Line"
+                onclick="setLine()"
+              />
+              <input
+                type="button"
+                id="btn_square"
+                value="Square"
+                onclick="setSquare()"
+              />
+              <input
+                type="button"
+                id="btn_rectangle"
+                value="Rectangle"
+                onclick="setRectangle()"
+              />
+              <input
+                type="button"
+                id="btn_polygon"
+                value="Polygon"
+                onclick="setPolygon()"
+              />
+            </div>
+          </div>
+          <div>
+            <div id="extramenuPolygon" class="menu">
+              <h4>Drawing polygon</h4>
+              <input
+                type="button"
+                id="finishPolygon"
+                value="End polygon"
+                onclick="finishPolygon()"
+              />
+            </div>
+            <div id="selectStats" class="menu">
+              <h4>Select Status</h4>
+              <div class="grid3border">
+                <p>x = <span id="select-x"></span></p>
+                <p>y = <span id="select-y"></span></p>
+                <p>Selected Model Id = <span id="select-id"></span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <canvas id="glcanvas" width="1000" height="500"></canvas>
+      </div>
+    </div>
+    <div id="help-popup">
+      <div class="help-container">
+        <input
+          type="button"
+          id="btn_exithelp"
+          value="Exit help"
+          onclick="closeHelp()"
+        />
+        <div class="supermenu">
+          <h3>Load dan Save File</h3>
+          <div class="column2grid">
+            <div class="helpmenu">
+              <!-- menu : load file -->
+              <h4>Load file</h4>
+            </div>
+            <div class="helpmenu">
+              <!-- menu : save file -->
+              <h4>Save file</h4>
+            </div>
+          </div>
+        </div>
+        <div class="supermenu">
+          <h3>Membuat Model</h3>
+          <div class="column2grid">
+            <div class="helpmenu">
+              <!-- menu : create line -->
+              <h4>Membuat garis</h4>
+            </div>
+            <div class="helpmenu">
+              <!-- menu : create square -->
+              <h4>Membuat persegi</h4>
+            </div>
+            <div class="helpmenu">
+              <!-- menu : create rectangle -->
+              <h4>Membuat persegi panjang</h4>
+            </div>
+            <div class="helpmenu">
+              <!-- menu : create polygon -->
+              <h4>Membuat poligon</h4>
+              <ol>
+                <li>Klik tombol "polygon" yang ada di bagian atas</li>
+                <li>
+                  Klik canvas (di bagian mana saja) untuk menetapkan titik sudut
+                  pertama poligon
+                </li>
+                <li>klik canvas untuk menetapkan titik-titik sudut poligon</li>
+                <li>
+                  Klik tombol "end polygon" yang ada di bagian atas jika sudah
+                  selesai menetapkan titik pusat dan titik-titik sudut poligon
+                </li>
+                <li>Akan terbentuk poligon berwarna hitam</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="supermenu">
+          <h3>Interaksi</h3>
+          <div class="column2grid">
+            <div class="helpmenu">
+              <!-- menu : shift control point -->
+              <h4>Menggeser titik kontrol</h4>
+            </div>
+            <div class="helpmenu">
+              <!-- menu : change line length -->
+              <h4>Mengubah panjang garis</h4>
+            </div>
+            <div class="helpmenu">
+              <!-- menu : change square size -->
+              <h4>Mengubah ukuran sisi persegi</h4>
+            </div>
+            <div class="helpmenu">
+              <!-- menu : change polygon color -->
+              <h4>Mengganti warna poligon</h4>
+              <ol>
+                <li>Klik tombol "select" yang ada di bagian atas</li>
+                <li>Klik pada canvas poligon yang ingin diubah warnanya</li>
+                <li>
+                  Pilih warna baru untuk poligon yang akan diubah warnanya di
+                  menu "Change polygon color" yang ada di sebelah kanan
+                </li>
+                <li>
+                  Klik tombol "Change color" untuk mengganti warna poligon
+                </li>
+                <li>Warna poligon akan terganti dengan yang baru</li>
+              </ol>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </body>

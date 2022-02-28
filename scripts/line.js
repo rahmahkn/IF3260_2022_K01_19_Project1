@@ -19,10 +19,14 @@ function drawLine() {
 
   // checking if 2 points are clicked, if yes, add a new line
   if (numPoint == 2) {
-    numModel++;
     numIndices[numModel] = 2;
+
+    // getting started to make a new model
+    numModel++;
+    numIndices[numModel] = 0;
     start[numModel] = startLine;
 
+    // by default the next model to be made is assumed to be line
     type[numModel] = 1;
 
     numPoint = 0;

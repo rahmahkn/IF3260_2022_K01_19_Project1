@@ -92,7 +92,11 @@ function drawSquare(x, y) {
         pointsPerSquare.push(cornersSquare[indexCornersSquare-2])
 
         index += 4;
+
+        numIndices[numModel] = 4;
+        
         numModel++;
+        numIndices[numModel] = 0;
         start[numModel] = index;
 
         type[numModel] = 2;
@@ -104,24 +108,4 @@ function drawSquare(x, y) {
 
         main();
     }
-}
-
-function idxVertexSquare(x, y) {
-    var new_x = (Number(x)).toFixed(1)
-    var new_y = (Number(y)).toFixed(1)
-
-    for (i = 0; i < pointsSquare.length; i++) {
-        for (let j = 0; j < pointsPerSquare.length; j++) {
-            var cond_x = (x >= pointsSquare[i][j*2] - 0.025) && (x <= pointsSquare[i][j*2] + 0.025)
-            var cond_y = (y >= pointsSquare[i][j*2+1] - 0.025) && (y <= pointsSquare[i][j*2+1] + 0.025)
-        }
-        if (cond_x && cond_y) {
-        return i;
-        }
-    }
-    return null;
-}
-
-function changeSquareSize(x, y) {
-    
 }

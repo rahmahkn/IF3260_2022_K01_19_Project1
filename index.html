@@ -9,6 +9,7 @@
       rel="stylesheet"
     />
     <script src="scripts/script.js" defer></script>
+    <script src="scripts/line.js" defer></script>
     <script src="scripts/polygon.js" defer></script>
     <script src="scripts/rectangle.js" defer></script>
     <script src="scripts/square.js" defer></script>
@@ -28,9 +29,29 @@
         </div>
         <div class="menu">
           <h4>File</h4>
-          <div class="button2container">
-            <button type="button">Load</button>
-            <button type="button">Save</button>
+          <div>
+            <p>Load file</p>
+            <input type="file" id="import_file" accept=".json" />
+            <div>
+              <input
+                type="button"
+                id="btn_load"
+                value="Load file"
+                onclick="loadFile()"
+              />
+            </div>
+
+            <div class="row">
+              <p>Save file</p>
+              <br />
+              <input type="text" id="filename" placeholder="File name" />
+              <input
+                type="button"
+                id="btn_save"
+                value="Save"
+                onclick="saveFile()"
+              />
+            </div>
           </div>
         </div>
         <div class="menu">
@@ -138,6 +159,16 @@
             <div class="helpmenu">
               <!-- menu : create line -->
               <h4>Membuat garis</h4>
+              <ol>
+                <li>Klik tombol "line" yang ada di bagian atas</li>
+                <li>
+                  Klik canvas (di bagian mana saja) untuk menetapkan titik sudut pertama garis
+                </li>
+                <li>Klik canvas pada tempat lain untuk menetapkan titik sudut kedua garis</li>
+                <li>
+                  Akan terbentuk garis berwarna hitam yang menghubungkan kedua titik tersebut
+                </li>
+              </ol> 
             </div>
             <div class="helpmenu">
               <!-- menu : create square -->
@@ -172,10 +203,24 @@
             <div class="helpmenu">
               <!-- menu : shift control point -->
               <h4>Menggeser titik kontrol</h4>
+              <ol>
+                <li>Klik tombol "select" yang ada di bagian atas</li>
+                <li>
+                  Klik sebuah titik sudut (dengan bentuk seperti kotak kecil) dan drag titik tersebut ke tempat lain
+                </li>
+                <li>Titik yang didrag tersebut akan berpindah tempat sesuai perpindahannya</li>
+              </ol>
             </div>
             <div class="helpmenu">
               <!-- menu : change line length -->
               <h4>Mengubah panjang garis</h4>
+              <ol>
+                <li>Klik tombol "select" yang ada di bagian atas</li>
+                <li>
+                  Klik sebuah titik sudut pada suatu garis (dengan bentuk seperti kotak kecil) dan drag titik tersebut ke tempat lain
+                </li>
+                <li>Titik yang didrag tersebut akan berpindah tempat sesuai perpindahannya dan panjang garis akan otomatis berubah</li>
+              </ol>
             </div>
             <div class="helpmenu">
               <!-- menu : change square size -->

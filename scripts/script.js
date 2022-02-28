@@ -363,3 +363,79 @@ function openHelp() {
 function closeHelp() {
   document.getElementById("help-popup").style.display = "none";
 }
+
+/* save file */
+function saveFile() {
+  // get filename
+  var filename = document.getElementById("filename").value;
+  if (filename == "") {
+    filename = "webgl project";
+  }
+
+  // collect project's variables
+  var objToExport = [];
+  objToExport.push(numModel);
+  objToExport.push(type);
+  objToExport.push(start);
+  objToExport.push(numIndices);
+  objToExport.push(index);
+  objToExport.push(vertices);
+
+  // stringify objToExport
+  var data = JSON.stringify(objToExport);
+
+  // download data
+  download(filename + ".json", data);
+
+  // show success info
+  alert("Save file success");
+}
+
+var download = function (filename, text) {
+  var element = document.createElement("a");
+  element.setAttribute(
+    "href",
+    "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+  );
+  element.setAttribute("download", filename);
+
+  element.style.display = "none";
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+};
+
+/* load file */
+function loadFile() {
+  // get file chosen
+  var file = document.getElementById("import_file").files[0];
+  if (!file) {
+    alert("Choose a json file first");
+    return;
+  }
+
+  var reader = new FileReader();
+  reader.onload = function (e) {
+    console.log("file imported");
+    arrObjects = JSON.parse(e.target.result);
+    LoadData(arrObjects);
+  };
+
+  reader.readAsText(file);
+}
+
+function LoadData(arrObjects) {
+  // save new global variables
+  numModel = arrObjects[0];
+  type = arrObjects[1];
+  start = arrObjects[2];
+  numIndices = arrObjects[3];
+  index = arrObjects[4];
+  vertices = arrObjects[5];
+
+  // render
+  main();
+  alert("The file is successfully loaded");
+}

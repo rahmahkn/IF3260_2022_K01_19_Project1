@@ -26,9 +26,29 @@
         </div>
         <div class="menu">
           <h4>File</h4>
-          <div class="button2container">
-            <button type="button">Load</button>
-            <button type="button">Save</button>
+          <div>
+            <p>Load file</p>
+            <input type="file" id="import_file" accept=".json" />
+            <div>
+              <input
+                type="button"
+                id="btn_load"
+                value="Load file"
+                onclick="loadFile()"
+              />
+            </div>
+
+            <div class="row">
+              <p>Save file</p>
+              <br />
+              <input type="text" id="filename" placeholder="File name" />
+              <input
+                type="button"
+                id="btn_save"
+                value="Save"
+                onclick="saveFile()"
+              />
+            </div>
           </div>
         </div>
         <div class="menu">

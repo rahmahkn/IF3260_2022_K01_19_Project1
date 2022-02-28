@@ -53,6 +53,15 @@ canvas {
   display: none;
 }
 
+.row {
+  display: grid;
+  grid-template-columns: 70% 30%;
+}
+
+.row input {
+  margin: 5px 0px;
+}
+
 /* popup */
 #help-popup {
   width: 80%;

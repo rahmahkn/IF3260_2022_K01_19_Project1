@@ -54,7 +54,13 @@ canvas.addEventListener("mousedown", function (event) {
     // check if this click is suppose to select a point to drag
     if (idxVertex(x, y) != null) {
       isDrag = true;
-      canvas.addEventListener("mouseup", (event) => changePoint(canvas, event, idxVertex(x, y)))
+      indexVertex = idxVertex(x, y)
+      indexModel = idxModel(indexVertex)
+      canvas.addEventListener("mouseup", function (event) {
+        if (type[indexModel] == 1 || type[indexModel] == 4) {
+          changePoint(canvas, event, indexVertex);  
+        }
+      });
     }
   }
 
@@ -87,21 +93,24 @@ canvas.addEventListener("mousedown", function (event) {
 
 // return the index of dragged vertex
 function idxVertex(x, y) {
-  var new_x = (Number(x)).toFixed(1)
-  var new_y = (Number(y)).toFixed(1)
-
   for (i = 0; i < index; i++) {
-    // var vert_x = (Number(vertices[i*5])).toFixed(1)
-    // var vert_y = (Number(vertices[i*5+1])).toFixed(1)
-
-    var cond_x = (x >= vertices[i*5] - 0.025) && (x <= vertices[i*5] + 0.025)
-    var cond_y = (y >= vertices[i*5+1] - 0.025) && (y <= vertices[i*5+1] + 0.025)
+    var cond_x = (x >= vertices[i*5] - 0.03) && (x <= vertices[i*5] + 0.03)
+    var cond_y = (y >= vertices[i*5+1] - 0.03) && (y <= vertices[i*5+1] + 0.03)
 
     if (cond_x && cond_y) {
       return i;
     }
   }
   return null;
+}
+
+function idxModel(indexVertex) {
+  for (i = 0; i < numModel; i++) {
+    if (indexVertex >= start[i] && indexVertex < start[i]+numIndices[i]) {
+      return i
+    }
+  }
+  return null
 }
 
 // change (x,y) that has been clicked to (new_x, new_y)

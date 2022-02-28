@@ -22,6 +22,8 @@ isPointSelected = false;
 var idxSelected = -1;
 var vertexSelected = -1;
 
+isDragSquare = false;
+
 /* Prepare the canvas and get WebGL context */
 canvas = document.getElementById("glcanvas");
 const gl = canvas.getContext("webgl");
@@ -62,32 +64,53 @@ canvas.addEventListener("mousedown", function (event) {
         }
       });
     }
+
+    if (getSquareVertex(x, y) != null) {
+      isDragSquare = true;
+      var j = getSquareVertex(x, y);
+      canvas.addEventListener("mouseup", function (event) {
+        changeSquareSize(canvas, event, j);
+        console.log("testChange")
+      });
+    }
   }
 
   // check if we want to start drawing
   if (isLine || isSquare || isRectangle || isPolygon) {
-    // push coordinate to array
-    vertices.push(x);
-    vertices.push(y);
-
-    // push color to array - asuumption: color is black
-    vertices.push(0);
-    vertices.push(0);
-    vertices.push(0);
 
     // do "special treatment" depend on the model that the user wants to make
     if (isLine) {
+      // push coordinate to array
+      vertices.push(x);
+      vertices.push(y);
+
+      // push color to array - asuumption: color is black
+      vertices.push(0);
+      vertices.push(0);
+      vertices.push(0);
+
       drawLine();
+      index++;
     } else if (isSquare) {
-      drawSquare();
+      drawSquare(x,y);
     } else if (isRectangle) {
-      drawRectangle();
+      drawRectangle(x,y);
     } else if (isPolygon) {
+      // push coordinate to array
+      vertices.push(x);
+      vertices.push(y);
+
+      // push color to array - asuumption: color is black
+      vertices.push(0);
+      vertices.push(0);
+      vertices.push(0);
+
       drawPolygon();
+      index++;
     }
 
     // add index, ready to get the next coordinate
-    index++;
+    // index++;
   }
 });
 
@@ -126,6 +149,101 @@ function changePoint(canvas, event, i) {
     main();
 
     isDrag = false;
+  }
+}
+
+function getSquareVertex(x, y) {
+  var i = 0;
+  while (i < numModel) {
+    if (type[i] == 2) {
+      // var vert = [];
+      var j = start[i];
+      while (j < start[i]+4) {
+        var cond_x = (x >= vertices[j*5] - 0.05) && (x <= vertices[j*5] + 0.05)
+        var cond_y = (y >= vertices[j*5+1] - 0.05) && (y <= vertices[j*5+1] + 0.05)
+
+        if (cond_x && cond_y) {
+          return j;
+        }
+        j++;
+      }
+    }
+    i++;
+  }
+  return null;
+}
+
+function changeSquareSize(canvas, event, j) {
+  console.log("execute changeSquareSize");
+  if (isDragSquare) {
+    console.log("changing square size");
+
+    var new_x = getXClickedPosition(canvas, event)
+    var new_y = getYClickedPosition(canvas, event)
+
+    additionX = new_x - vertices[j*5];
+    additionY = new_y - vertices[j*5+1];
+
+    // Upper left vertex is clicked
+    if (additionX < 0 && additionY > 0) {
+      console.log("upper left");
+      vertices[j*5] += additionX;
+      vertices[j*5+1] += additionY;
+
+      vertices[(j+1)*5] += additionX;
+
+      vertices[(j+3)*5+1] += additionY;
+
+      main()
+      isDragSquare = false;
+
+      return;
+    }
+
+    // Lower left vertex is clicked
+    else if (additionX < 0 && additionY < 0) {
+      vertices[j*5] += additionX;
+      vertices[j*5+1] += additionY;
+
+      vertices[(j-1)*5] += additionX;
+
+      vertices[(j+1)*5+1] += additionY;
+
+      main()
+      isDragSquare = false;
+
+      return;
+    }
+
+    // Lower right vertex is clicked
+    else if (additionX > 0 && additionY < 0) {
+      vertices[j*5] += additionX;
+      vertices[j*5+1] += additionY;
+
+      vertices[(j-1)*5+1] += additionY;
+
+      vertices[(j+1)*5] += additionX;
+
+      main()
+      isDragSquare = false;
+
+      return;
+    }
+
+    // Upper right vertex is clicked
+    else if (additionX > 0 && additionY > 0) {
+      vertices[j*5] += additionX;
+      vertices[j*5+1] += additionY;
+
+      vertices[(j-1)*5] += additionX;
+
+      vertices[(j-3)*5+1] += additionY;
+
+      main()
+      isDragSquare = false;
+
+      return;
+    }
   }
 }
 
@@ -303,9 +421,11 @@ var render = function () {
     }
     // if Model[i] is a square
     if (type[i] == 2) {
+      gl.drawArrays(gl.TRIANGLE_FAN, start[i], 4)
     }
     // if Model[i] is a rectangle
     if (type[i] == 3) {
+      gl.drawArrays(gl.TRIANGLE_FAN, start[i], 4)
     }
     // if Model[i] is a polygon
     if (type[i] == 4) {

@@ -1,90 +1,96 @@
 var verticesSquare = []
 var indexSquare = 0
+var beginSquare = true
 
 var cornersSquare = []
 
 var pointsSquare = []
 
-function drawSquare() {
-    var begin = true;
+function setSquare(params) {
+    isSquare = true
 
-    canvas.addEventListener("mousedown", function (event) {
-        x = getXClickedPosition(canvas, event);
-        y = getYClickedPosition(canvas, event);
+    isPolygon = false;
+    isLine = false;
+    isRectangle = false;
+    isSelect = false;
 
-        // First click which defines first corner
-        if (begin) {
+    type[numModel] = 2;
+}
 
-            cornersSquare = [];
-            cornersSquare.push(x);
-            cornersSquare.push(y);
+function drawSquare(x, y) {
+    // First click which defines first corner
+    if (beginSquare) {
 
-            begin = false;
+        cornersSquare = [];
+        cornersSquare.push(x);
+        cornersSquare.push(y);
+
+        beginSquare = false;
+        // console.log("first click")
+    }
+    // Second click
+    else {
+        firstX = cornersSquare[0]
+        firstY = cornersSquare[1]
+
+        if (firstX < x) {
+            if (firstY > y) {
+                x = firstX + (firstY-y)/2
+            } else {
+                x = firstX - (firstY-y)/2
+            }
         }
-        // Second click
         else {
-            firstX = cornersSquare[0]
-            firstY = cornersSquare[1]
-
-            if (firstX < x) {
-                if (firstY > y) {
-                    x = firstX + (firstY-y)/2
-                } else {
-                    x = firstX - (firstY-y)/2
-                }
+            if (firstY > y) {
+                x = firstX - (firstY-y)/2
+            } else {
+                x = firstX + (firstY-y)/2
             }
-            else {
-                if (firstY > y) {
-                    x = firstX - (firstY-y)/2
-                } else {
-                    x = firstX + (firstY-y)/2
-                }
-            }
-
-            cornersSquare.push(x)
-            cornersSquare.push(y)
-            var indexCornersSquare = cornersSquare.length-1
-
-            // First vertex
-            verticesSquare.push(cornersSquare[indexCornersSquare-3]);
-            verticesSquare.push(cornersSquare[indexCornersSquare-2]);
-            verticesSquare.push(0);
-            verticesSquare.push(0);
-            verticesSquare.push(0);
-
-            // Second vertex
-            verticesSquare.push(cornersSquare[indexCornersSquare-3]);
-            verticesSquare.push(cornersSquare[indexCornersSquare]);
-            verticesSquare.push(0);
-            verticesSquare.push(0);
-            verticesSquare.push(0);
-
-            // Third vertex
-            verticesSquare.push(cornersSquare[indexCornersSquare-1]);
-            verticesSquare.push(cornersSquare[indexCornersSquare]);
-            verticesSquare.push(0);
-            verticesSquare.push(0);
-            verticesSquare.push(0);
-
-            // Fourth vertex
-            verticesSquare.push(cornersSquare[indexCornersSquare-1]);
-            verticesSquare.push(cornersSquare[indexCornersSquare-2]);
-            verticesSquare.push(0);
-            verticesSquare.push(0);
-            verticesSquare.push(0);
-
-            indexSquare += 4;
-            begin = true;
-
-            main(verticesSquare);
-
-            renderSquare();
-
-            pointsSquare.push(cornersSquare)
-
-            // console.log(pointsSquare)
         }
-    });
+
+        cornersSquare.push(x)
+        cornersSquare.push(y)
+        var indexCornersSquare = cornersSquare.length-1
+
+        // First vertex
+        vertices.push(cornersSquare[indexCornersSquare-3]);
+        vertices.push(cornersSquare[indexCornersSquare-2]);
+        vertices.push(0);
+        vertices.push(0);
+        vertices.push(0);
+
+        // Second vertex
+        vertices.push(cornersSquare[indexCornersSquare-3]);
+        vertices.push(cornersSquare[indexCornersSquare]);
+        vertices.push(0);
+        vertices.push(0);
+        vertices.push(0);
+
+        // Third vertex
+        vertices.push(cornersSquare[indexCornersSquare-1]);
+        vertices.push(cornersSquare[indexCornersSquare]);
+        vertices.push(0);
+        vertices.push(0);
+        vertices.push(0);
+
+        // Fourth vertex
+        vertices.push(cornersSquare[indexCornersSquare-1]);
+        vertices.push(cornersSquare[indexCornersSquare-2]);
+        vertices.push(0);
+        vertices.push(0);
+        vertices.push(0);
+
+        index += 4;
+        numModel++;
+        start[numModel] = index;
+
+        type[numModel] = 2;
+
+        beginSquare = true;
+        // console.log("second click")
+
+        main();
+    }
 }
 
 function renderSquare() {

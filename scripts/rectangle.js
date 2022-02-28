@@ -1,66 +1,76 @@
 var verticesRectangle = []
 var indexRectangle = 0;
+var beginRectangle = true;
 
 var cornersRectangle = []; 
 
-function drawRectangle() {
-    var begin = true;
+function setRectangle() {
+    isRectangle = true
 
-    canvas.addEventListener("mousedown", function (event) {
-        x = getXClickedPosition(canvas, event);
-        y = getYClickedPosition(canvas, event);
+    isPolygon = false;
+    isLine = false;
+    isSquare = false;
+    isSelect = false;
 
-        // First click which defines first corner
-        if (begin) {
+    type[numModel] = 3;
+}
 
-            cornersRectangle = [];
-            cornersRectangle.push(x);
-            cornersRectangle.push(y);
+function drawRectangle(x, y) {
+    // First click which defines first corner
+    if (beginRectangle) {
 
-            begin = false;
-        }
-        // Second click
-        else {
-            cornersRectangle.push(x);
-            cornersRectangle.push(y);
-            var indexCornersRectangle = cornersRectangle.length-1;
+        cornersRectangle = [];
+        cornersRectangle.push(x);
+        cornersRectangle.push(y);
 
-            // First vertex
-            verticesRectangle.push(cornersRectangle[indexCornersRectangle-3]);
-            verticesRectangle.push(cornersRectangle[indexCornersRectangle-2]);
-            verticesRectangle.push(0);
-            verticesRectangle.push(0);
-            verticesRectangle.push(0);
+        beginRectangle = false;
+        // console.log("first click")
+    }
+    // Second click
+    else {
+        cornersRectangle.push(x);
+        cornersRectangle.push(y);
+        var indexCornersRectangle = cornersRectangle.length-1;
 
-            // Second vertex
-            verticesRectangle.push(cornersRectangle[indexCornersRectangle-3]);
-            verticesRectangle.push(cornersRectangle[indexCornersRectangle]);
-            verticesRectangle.push(0);
-            verticesRectangle.push(0);
-            verticesRectangle.push(0);
+        // First vertex
+        vertices.push(cornersRectangle[indexCornersRectangle-3]);
+        vertices.push(cornersRectangle[indexCornersRectangle-2]);
+        vertices.push(0);
+        vertices.push(0);
+        vertices.push(0);
 
-            // Third vertex
-            verticesRectangle.push(cornersRectangle[indexCornersRectangle-1]);
-            verticesRectangle.push(cornersRectangle[indexCornersRectangle]);
-            verticesRectangle.push(0);
-            verticesRectangle.push(0);
-            verticesRectangle.push(0);
+        // Second vertex
+        vertices.push(cornersRectangle[indexCornersRectangle-3]);
+        vertices.push(cornersRectangle[indexCornersRectangle]);
+        vertices.push(0);
+        vertices.push(0);
+        vertices.push(0);
 
-            // Fourth vertex
-            verticesRectangle.push(cornersRectangle[indexCornersRectangle-1]);
-            verticesRectangle.push(cornersRectangle[indexCornersRectangle-2]);
-            verticesRectangle.push(0);
-            verticesRectangle.push(0);
-            verticesRectangle.push(0);
+        // Third vertex
+        vertices.push(cornersRectangle[indexCornersRectangle-1]);
+        vertices.push(cornersRectangle[indexCornersRectangle]);
+        vertices.push(0);
+        vertices.push(0);
+        vertices.push(0);
 
-            indexRectangle += 4;
-            begin = true;
+        // Fourth vertex
+        vertices.push(cornersRectangle[indexCornersRectangle-1]);
+        vertices.push(cornersRectangle[indexCornersRectangle-2]);
+        vertices.push(0);
+        vertices.push(0);
+        vertices.push(0);
 
-            main(verticesRectangle);
+        index += 4;
+        numModel++;
+        start[numModel] = index;
 
-            renderRectangle();
-        }
-    });
+        type[numModel] = 3;
+
+        beginRectangle = true;
+        // console.log("second click")
+
+        main();
+    }
 }
 
 function renderRectangle() {

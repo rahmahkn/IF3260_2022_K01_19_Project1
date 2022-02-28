@@ -60,28 +60,40 @@ canvas.addEventListener("mousedown", function (event) {
 
   // check if we want to start drawing
   if (isLine || isSquare || isRectangle || isPolygon) {
-    // push coordinate to array
-    vertices.push(x);
-    vertices.push(y);
-
-    // push color to array - asuumption: color is black
-    vertices.push(0);
-    vertices.push(0);
-    vertices.push(0);
 
     // do "special treatment" depend on the model that the user wants to make
     if (isLine) {
+      // push coordinate to array
+      vertices.push(x);
+      vertices.push(y);
+
+      // push color to array - asuumption: color is black
+      vertices.push(0);
+      vertices.push(0);
+      vertices.push(0);
+
       drawLine();
+      index++;
     } else if (isSquare) {
-      drawSquare();
+      drawSquare(x,y);
     } else if (isRectangle) {
-      drawRectangle();
+      drawRectangle(x,y);
     } else if (isPolygon) {
+      // push coordinate to array
+      vertices.push(x);
+      vertices.push(y);
+
+      // push color to array - asuumption: color is black
+      vertices.push(0);
+      vertices.push(0);
+      vertices.push(0);
+
       drawPolygon();
+      index++;
     }
 
     // add index, ready to get the next coordinate
-    index++;
+    // index++;
   }
 });
 
@@ -293,9 +305,11 @@ var render = function () {
     }
     // if Model[i] is a square
     if (type[i] == 2) {
+      gl.drawArrays(gl.TRIANGLE_FAN, start[i], 4)
     }
     // if Model[i] is a rectangle
     if (type[i] == 3) {
+      gl.drawArrays(gl.TRIANGLE_FAN, start[i], 4)
     }
     // if Model[i] is a polygon
     if (type[i] == 4) {

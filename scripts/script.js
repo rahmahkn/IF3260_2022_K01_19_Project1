@@ -22,6 +22,8 @@ isPointSelected = false;
 var idxSelected = -1;
 var vertexSelected = -1;
 
+isDragSquare = false;
+
 /* Prepare the canvas and get WebGL context */
 canvas = document.getElementById("glcanvas");
 const gl = canvas.getContext("webgl");
@@ -56,9 +58,15 @@ canvas.addEventListener("mousedown", function (event) {
       isDrag = true;
       indexVertex = idxVertex(x, y)
       canvas.addEventListener("mouseup", function (event) {
-        if (type[indexVertex] == 1) {
+        if (true) {
           changePoint(canvas, event, indexVertex);  
         }
+      });
+    }
+
+    if (getSquareVertex(x, y)) {
+      canvas.addEventListener("mouseup", function (event) {
+        changeSquareSize(canvas, event, j);
       });
     }
   }
@@ -134,6 +142,38 @@ function changePoint(canvas, event, i) {
 
     isDrag = false;
   }
+}
+
+function getSquareVertex(x, y) {
+  var i = 0;
+  // console.log("executing getSquareVertex")
+  while (i < numModel) {
+    if (type[i] == 2) {
+      // var vert = [];
+      var j = start[i];
+      while (j < start[i]+4) {
+        var cond_x = (x >= vertices[j*5] - 0.025) && (x <= vertices[j*5] + 0.025)
+        var cond_y = (y >= vertices[j*5+1] - 0.025) && (y <= vertices[j*5+1] + 0.025)
+
+        if (cond_x && cond_y) {
+          console.log("found square vertex")
+          return j;
+        }
+
+        j++;
+      }
+    }
+    i++;
+  }
+
+  return null;
+}
+
+function changeSquareSize(canvas, event, j) {
+  // console.log("changing square size");
+
+  var new_x = getXClickedPosition(canvas, event)
+  var new_y = getYClickedPosition(canvas, event)
 }
 
 function insideOf(x, y) {

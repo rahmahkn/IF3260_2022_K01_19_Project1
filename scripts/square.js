@@ -99,7 +99,7 @@ function drawSquare(x, y) {
 
         beginSquare = true;
         pointsSquare.push(pointsPerSquare)
-        console.log(pointsSquare)
+        // console.log(pointsSquare)
         // console.log("second click")
 
         main();

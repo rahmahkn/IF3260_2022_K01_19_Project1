@@ -17,8 +17,6 @@ function setLine() {
 function drawLine() {
   numPoint++;
 
-  console.log(x, y)
-
   // checking if 2 points are clicked, if yes, add a new line
   if (numPoint == 2) {
     numModel++;

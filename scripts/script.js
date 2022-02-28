@@ -51,10 +51,10 @@ canvas.addEventListener("mousedown", function (event) {
       return;
     }
 
-    // check if this click is suppose to select a point
-    if (isVertex(x, y) != null) {
+    // check if this click is suppose to select a point to drag
+    if (idxVertex(x, y) != null) {
       isDrag = true;
-      canvas.addEventListener("mouseup", (event) => changePoint(canvas, event, isVertex(x, y)))
+      canvas.addEventListener("mouseup", (event) => changePoint(canvas, event, idxVertex(x, y)))
     }
   }
 
@@ -85,16 +85,19 @@ canvas.addEventListener("mousedown", function (event) {
   }
 });
 
-// checking if point (x,y) is a vertex
-function isVertex(x, y) {
+// return the index of dragged vertex
+function idxVertex(x, y) {
   var new_x = (Number(x)).toFixed(1)
   var new_y = (Number(y)).toFixed(1)
 
   for (i = 0; i < index; i++) {
-    var vert_x = (Number(vertices[i*5])).toFixed(1)
-    var vert_y = (Number(vertices[i*5+1])).toFixed(1)
+    // var vert_x = (Number(vertices[i*5])).toFixed(1)
+    // var vert_y = (Number(vertices[i*5+1])).toFixed(1)
 
-    if (new_x == vert_x && new_y == vert_y) {
+    var cond_x = (x >= vertices[i*5] - 0.025) && (x <= vertices[i*5] + 0.025)
+    var cond_y = (y >= vertices[i*5+1] - 0.025) && (y <= vertices[i*5+1] + 0.025)
+
+    if (cond_x && cond_y) {
       return i;
     }
   }
@@ -107,6 +110,8 @@ function changePoint(canvas, event, i) {
     var new_x = getXClickedPosition(canvas, event)
     var new_y = getYClickedPosition(canvas, event)
   
+    console.log(vertices[i*5] - new_x)
+
     vertices[i*5] = new_x
     vertices[i*5+1] = new_y
   
@@ -161,7 +166,7 @@ varying vec3 fragColor;
 void main() {
     fragColor = vertexColor;
     gl_Position = vec4(vertexPosition, 0.0, 1.0);
-    gl_PointSize = 10.0;
+    gl_PointSize = 7.0;
 }`;
 
 var fragmentShaderCode = `precision mediump float;

@@ -14,6 +14,7 @@ function setPolygon() {
 
   // show extra menu
   extramenuPolygon.style.display = "grid";
+  document.getElementById("selectStats").style.display = "none";
 }
 
 function drawPolygon() {

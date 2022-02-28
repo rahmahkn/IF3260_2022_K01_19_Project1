@@ -54,11 +54,11 @@ canvas.addEventListener("mousedown", function (event) {
     // check if this click is suppose to select a point to drag
     if (idxVertex(x, y) != null) {
       isDrag = true;
-      indexVertex = idxVertex(x, y)
-      indexModel = idxModel(indexVertex)
+      indexVertex = idxVertex(x, y);
+      indexModel = idxModel(indexVertex);
       canvas.addEventListener("mouseup", function (event) {
         if (type[indexModel] == 1 || type[indexModel] == 4) {
-          changePoint(canvas, event, indexVertex);  
+          changePoint(canvas, event, indexVertex);
         }
       });
     }
@@ -94,8 +94,9 @@ canvas.addEventListener("mousedown", function (event) {
 // return the index of dragged vertex
 function idxVertex(x, y) {
   for (i = 0; i < index; i++) {
-    var cond_x = (x >= vertices[i*5] - 0.03) && (x <= vertices[i*5] + 0.03)
-    var cond_y = (y >= vertices[i*5+1] - 0.03) && (y <= vertices[i*5+1] + 0.03)
+    var cond_x = x >= vertices[i * 5] - 0.03 && x <= vertices[i * 5] + 0.03;
+    var cond_y =
+      y >= vertices[i * 5 + 1] - 0.03 && y <= vertices[i * 5 + 1] + 0.03;
 
     if (cond_x && cond_y) {
       return i;
@@ -106,23 +107,23 @@ function idxVertex(x, y) {
 
 function idxModel(indexVertex) {
   for (i = 0; i < numModel; i++) {
-    if (indexVertex >= start[i] && indexVertex < start[i]+numIndices[i]) {
-      return i
+    if (indexVertex >= start[i] && indexVertex < start[i] + numIndices[i]) {
+      return i;
     }
   }
-  return null
+  return null;
 }
 
 // change (x,y) that has been clicked to (new_x, new_y)
 function changePoint(canvas, event, i) {
   if (isDrag) {
-    var new_x = getXClickedPosition(canvas, event)
-    var new_y = getYClickedPosition(canvas, event)
+    var new_x = getXClickedPosition(canvas, event);
+    var new_y = getYClickedPosition(canvas, event);
 
-    vertices[i*5] = new_x
-    vertices[i*5+1] = new_y
-  
-    main()
+    vertices[i * 5] = new_x;
+    vertices[i * 5 + 1] = new_y;
+
+    main();
 
     isDrag = false;
   }
@@ -173,7 +174,7 @@ varying vec3 fragColor;
 void main() {
     fragColor = vertexColor;
     gl_Position = vec4(vertexPosition, 0.0, 1.0);
-    gl_PointSize = 7.0;
+    gl_PointSize = 3.0;
 }`;
 
 var fragmentShaderCode = `precision mediump float;

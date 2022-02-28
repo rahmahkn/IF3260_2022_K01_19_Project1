@@ -6,8 +6,8 @@ var cornersSquare = []
 
 var pointsSquare = []
 
-function setSquare(params) {
-    isSquare = true
+function setSquare() {
+    isSquare = true;
 
     isPolygon = false;
     isLine = false;
@@ -21,7 +21,6 @@ function drawSquare(x, y) {
     // First click which defines first corner
     if (beginSquare) {
 
-        cornersSquare = [];
         cornersSquare.push(x);
         cornersSquare.push(y);
 
@@ -30,8 +29,12 @@ function drawSquare(x, y) {
     }
     // Second click
     else {
-        firstX = cornersSquare[0]
-        firstY = cornersSquare[1]
+        var pointsPerSquare = []
+
+        var indexCornersSquare = cornersSquare.length-1
+
+        firstX = cornersSquare[indexCornersSquare-1]
+        firstY = cornersSquare[indexCornersSquare]
 
         if (firstX < x) {
             if (firstY > y) {
@@ -50,7 +53,7 @@ function drawSquare(x, y) {
 
         cornersSquare.push(x)
         cornersSquare.push(y)
-        var indexCornersSquare = cornersSquare.length-1
+        indexCornersSquare = cornersSquare.length-1
 
         // First vertex
         vertices.push(cornersSquare[indexCornersSquare-3]);
@@ -58,6 +61,8 @@ function drawSquare(x, y) {
         vertices.push(0);
         vertices.push(0);
         vertices.push(0);
+        pointsPerSquare.push(cornersSquare[indexCornersSquare-3])
+        pointsPerSquare.push(cornersSquare[indexCornersSquare-2])
 
         // Second vertex
         vertices.push(cornersSquare[indexCornersSquare-3]);
@@ -65,6 +70,8 @@ function drawSquare(x, y) {
         vertices.push(0);
         vertices.push(0);
         vertices.push(0);
+        pointsPerSquare.push(cornersSquare[indexCornersSquare-3])
+        pointsPerSquare.push(cornersSquare[indexCornersSquare])
 
         // Third vertex
         vertices.push(cornersSquare[indexCornersSquare-1]);
@@ -72,6 +79,8 @@ function drawSquare(x, y) {
         vertices.push(0);
         vertices.push(0);
         vertices.push(0);
+        pointsPerSquare.push(cornersSquare[indexCornersSquare-1])
+        pointsPerSquare.push(cornersSquare[indexCornersSquare])
 
         // Fourth vertex
         vertices.push(cornersSquare[indexCornersSquare-1]);
@@ -79,6 +88,8 @@ function drawSquare(x, y) {
         vertices.push(0);
         vertices.push(0);
         vertices.push(0);
+        pointsPerSquare.push(cornersSquare[indexCornersSquare-1])
+        pointsPerSquare.push(cornersSquare[indexCornersSquare-2])
 
         index += 4;
         numModel++;
@@ -87,38 +98,30 @@ function drawSquare(x, y) {
         type[numModel] = 2;
 
         beginSquare = true;
+        pointsSquare.push(pointsPerSquare)
+        console.log(pointsSquare)
         // console.log("second click")
 
         main();
     }
 }
 
-function renderSquare() {
-    gl.clear(gl.COLOR_BUFFER_BIT);
+function idxVertexSquare(x, y) {
+    var new_x = (Number(x)).toFixed(1)
+    var new_y = (Number(y)).toFixed(1)
 
-    for(var i = 0; i<indexSquare; i += 4)
-        gl.drawArrays(gl.TRIANGLE_FAN, i, 4)
+    for (i = 0; i < pointsSquare.length; i++) {
+        for (let j = 0; j < pointsPerSquare.length; j++) {
+            var cond_x = (x >= pointsSquare[i][j*2] - 0.025) && (x <= pointsSquare[i][j*2] + 0.025)
+            var cond_y = (y >= pointsSquare[i][j*2+1] - 0.025) && (y <= pointsSquare[i][j*2+1] + 0.025)
+        }
+        if (cond_x && cond_y) {
+        return i;
+        }
+    }
+    return null;
 }
 
-function isInsideSquare() {
-    canvas.addEventListener("mousedown", function (event) {
-        x = getXClickedPosition(canvas, event);
-        y = getYClickedPosition(canvas, event);
-
-        let found = false;
-
-        let i = 0
-        console.log(pointsSquare)
-        while (!found && i < pointsSquare.length) {
-            if ((pointsSquare[i][0] <= x && x <= pointsSquare[i][2]) && (pointsSquare[i][1] <= y && y <= pointsSquare[i][3])) {
-                found = true;
-                console.log("found");
-                return i;
-            }
-            console.log(i)
-            i++;
-        }
-
-        return -1;
-    }); 
+function changeSquareSize(x, y) {
+    
 }

@@ -5,7 +5,7 @@ var beginRectangle = true;
 var cornersRectangle = []; 
 
 function setRectangle() {
-    isRectangle = true
+    isRectangle = true;
 
     isPolygon = false;
     isLine = false;
@@ -19,7 +19,6 @@ function drawRectangle(x, y) {
     // First click which defines first corner
     if (beginRectangle) {
 
-        cornersRectangle = [];
         cornersRectangle.push(x);
         cornersRectangle.push(y);
 
@@ -71,11 +70,4 @@ function drawRectangle(x, y) {
 
         main();
     }
-}
-
-function renderRectangle() {
-    gl.clear(gl.COLOR_BUFFER_BIT);
-
-    for(var i = 0; i<indexRectangle; i += 4)
-        gl.drawArrays(gl.TRIANGLE_FAN, i, 4)
 }

@@ -54,7 +54,12 @@ canvas.addEventListener("mousedown", function (event) {
     // check if this click is suppose to select a point to drag
     if (idxVertex(x, y) != null) {
       isDrag = true;
-      canvas.addEventListener("mouseup", (event) => changePoint(canvas, event, idxVertex(x, y)))
+      indexVertex = idxVertex(x, y)
+      canvas.addEventListener("mouseup", function (event) {
+        if (type[indexVertex] == 1) {
+          changePoint(canvas, event, indexVertex);  
+        }
+      });
     }
   }
 
